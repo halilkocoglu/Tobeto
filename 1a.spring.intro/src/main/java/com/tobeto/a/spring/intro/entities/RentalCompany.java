@@ -1,12 +1,16 @@
 package com.tobeto.a.spring.intro.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.apachecommons.CommonsLog;
 
 import java.util.List;
 
 @Table(name = "rental-companies")
 @Entity
+@Getter
+@Setter
 public class RentalCompany {
     @Id
     @Column(name = "id")

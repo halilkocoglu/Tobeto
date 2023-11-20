@@ -1,11 +1,15 @@
 package com.tobeto.a.spring.intro.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Table(name = "payments")
 @Entity
+@Getter
+@Setter
 public class Payment {
     @Id
     @Column(name = "id")

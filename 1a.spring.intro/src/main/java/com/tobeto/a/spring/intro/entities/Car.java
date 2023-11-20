@@ -1,6 +1,8 @@
 package com.tobeto.a.spring.intro.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -8,6 +10,8 @@ import java.util.List;
 // ORM => Object relations mapping
 @Table(name = "cars")
 @Entity
+@Getter
+@Setter
 public class Car {
     @Id
     @Column(name = "id") //Tablodaki kolon adı

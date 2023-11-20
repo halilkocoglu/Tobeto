@@ -1,6 +1,8 @@
 package com.tobeto.a.spring.intro.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -8,6 +10,8 @@ import java.util.List;
 
 @Table(name = "reservations")
 @Entity
+@Getter
+@Setter
 public class Reservation {
     @Id
     @Column(name = "id")
