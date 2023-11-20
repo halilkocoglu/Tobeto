@@ -1,5 +1,6 @@
 package com.tobeto.a.spring.intro.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +21,7 @@ public class RentalCompany {
     private String name;
     @Column(name = "location")
     private String location;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "rentalCompany")
     private List<Car> cars;
 

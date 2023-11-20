@@ -1,5 +1,6 @@
 package com.tobeto.a.spring.intro.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,9 +31,10 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name= "customer_id")
     private Customer customer;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "reservation")
     private List<Payment> payments;
+    @JsonIgnore
     @OneToMany(mappedBy = "reservation")
     private List<ReservationDetail> reservationDetails;
 }

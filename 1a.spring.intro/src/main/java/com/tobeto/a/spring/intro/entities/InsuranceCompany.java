@@ -1,5 +1,6 @@
 package com.tobeto.a.spring.intro.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +22,7 @@ public class InsuranceCompany {
     private Double coverageRate;
     @Column(name = "price")
     private Double price;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "insuranceCompany")
     private List<CarInsurance> carInsurances;
 }

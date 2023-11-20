@@ -1,5 +1,6 @@
 package com.tobeto.a.spring.intro.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +20,7 @@ public class PhoneCountryCode {
     private String name;
     @Column(name = "code")
     private String code;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "phoneCountryCode")
     private List<CustomerPhone> customerPhones;
 }

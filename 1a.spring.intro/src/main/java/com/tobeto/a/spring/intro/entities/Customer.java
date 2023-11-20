@@ -1,5 +1,6 @@
 package com.tobeto.a.spring.intro.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,9 +24,10 @@ public class Customer {
     private String email;
     @Column(name = "age")
     private Short age;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "customer")
     private List<CustomerPhone> customerPhones;
+    @JsonIgnore
     @OneToMany(mappedBy = "customer")
     private List<Reservation> reservations;
 }
