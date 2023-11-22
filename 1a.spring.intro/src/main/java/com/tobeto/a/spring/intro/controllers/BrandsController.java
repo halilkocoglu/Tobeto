@@ -1,7 +1,10 @@
 package com.tobeto.a.spring.intro.controllers;
 
-import com.tobeto.a.spring.intro.entities.Brand;
-import com.tobeto.a.spring.intro.repositories.BrandRepository;
+import com.tobeto.a.spring.intro.services.abstracts.BrandService;
+import com.tobeto.a.spring.intro.services.dtos.brand.requests.AddBrandRequest;
+import com.tobeto.a.spring.intro.services.dtos.brand.requests.UpdateBrandRequest;
+import com.tobeto.a.spring.intro.services.dtos.brand.responses.GetAllBrandResponse;
+import com.tobeto.a.spring.intro.services.dtos.brand.responses.GetByIdBrandResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,38 +12,35 @@ import java.util.List;
 @RestController
 @RequestMapping("api/brands")
 public class BrandsController {
-    private final BrandRepository brandRepository;
-    //Spring IOC => DI Container
-    public BrandsController(BrandRepository brandRepository) {
-        this.brandRepository = brandRepository;
+    private final BrandService brandService;
+
+    public BrandsController(BrandService brandService) {
+        this.brandService = brandService;
     }
 
     @GetMapping
-    public List<Brand> getAll () {
+    public List<GetAllBrandResponse> getAll () {
         //Hazır bir jpa rep. fonksiyonu - Tüm verileri döner
-        List<Brand> brands = brandRepository.findAll();
-        return brands;
+        return brandService.getAll();
     }
     @GetMapping("{id}")
-    public Brand getById(@PathVariable Integer id) {
-        return brandRepository.findById(id).orElseThrow();
-    }
-    @PostMapping
-    public void add(@RequestBody Brand brand ){
-        brandRepository.save(brand);
+    public GetByIdBrandResponse getById(@PathVariable Integer id) {
+        return brandService.getById(id);
     }
     @DeleteMapping("{id}")
     public void delete (@PathVariable int id) {
-        Brand brandToDelete = brandRepository.findById(id).orElseThrow();
-        brandRepository.delete(brandToDelete);
+        brandService.delete(id);
     }
+    @PostMapping
+    public void add(@RequestBody AddBrandRequest request ){
+        brandService.add(request);
+    }
+
     //Update
     @PutMapping("{id}")
-    public void update (@RequestBody Brand brand) {
-        Brand brandToUpdate = brandRepository.findById(brand.getId()).orElseThrow();
+    public void update (@RequestBody UpdateBrandRequest request) {
 
-        brandToUpdate.setName(brand.getName());
-        brandRepository.save(brandToUpdate);
+        brandService.update(request);
 
     }
 }

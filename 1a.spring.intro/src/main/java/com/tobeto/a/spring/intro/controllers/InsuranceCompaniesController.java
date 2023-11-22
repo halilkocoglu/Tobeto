@@ -1,7 +1,10 @@
 package com.tobeto.a.spring.intro.controllers;
 
-import com.tobeto.a.spring.intro.entities.InsuranceCompany;
-import com.tobeto.a.spring.intro.repositories.InsuranceCompanyRepository;
+import com.tobeto.a.spring.intro.services.abstracts.InsuranceCompanyService;
+import com.tobeto.a.spring.intro.services.dtos.insuranceCompany.requests.AddInsuranceCompanyRequest;
+import com.tobeto.a.spring.intro.services.dtos.insuranceCompany.requests.UpdateInsuranceCompanyRequest;
+import com.tobeto.a.spring.intro.services.dtos.insuranceCompany.responses.GetAllInsuranceCompaniesResponse;
+import com.tobeto.a.spring.intro.services.dtos.insuranceCompany.responses.GetInsuranceCompanyByIdResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,35 +12,30 @@ import java.util.List;
 @RestController
 @RequestMapping("api/insurance-companies")
 public class InsuranceCompaniesController {
-    private final InsuranceCompanyRepository insuranceCompanyRepository;
+    private final InsuranceCompanyService insuranceCompanyService;
 
-    public InsuranceCompaniesController(InsuranceCompanyRepository insuranceCompanyRepository) {
-        this.insuranceCompanyRepository = insuranceCompanyRepository;
+    public InsuranceCompaniesController(InsuranceCompanyService insuranceCompanyService) {
+        this.insuranceCompanyService = insuranceCompanyService;
     }
 
-    @GetMapping
-    public List<InsuranceCompany> getAll() {
-        return insuranceCompanyRepository.findAll();
-    }
-    @GetMapping("{id}")
-    public InsuranceCompany getById (@PathVariable Integer id){
-        return insuranceCompanyRepository.findById(id).orElseThrow();
-    }
     @PostMapping
-    public void addInsuranceCompany (@RequestBody InsuranceCompany insuranceCompany){
-        insuranceCompanyRepository.save(insuranceCompany);
+    public void addInsuranceCompany (@RequestBody AddInsuranceCompanyRequest request){
+        insuranceCompanyService.add(request);
+    }
+    @PutMapping("{id}")
+    public void updateInsuranceCompany (@RequestBody UpdateInsuranceCompanyRequest request) {
+        insuranceCompanyService.update(request);
     }
     @DeleteMapping("{id}")
     public void deleteInsuranceCompany (@PathVariable Integer id) {
-        InsuranceCompany insuranceCompanyToDelete = insuranceCompanyRepository.findById(id).orElseThrow();
-        insuranceCompanyRepository.delete(insuranceCompanyToDelete);
+        insuranceCompanyService.delete(id);
     }
-    @PutMapping("{id}")
-    public void updateInsuranceCompany (@RequestBody InsuranceCompany insuranceCompany) {
-        InsuranceCompany insuranceCompanyToUpdate = insuranceCompanyRepository.findById(insuranceCompany.getId()).orElseThrow();
-        insuranceCompanyToUpdate.setName(insuranceCompany.getName());
-        insuranceCompanyToUpdate.setCoverageRate(insuranceCompany.getCoverageRate());
-        insuranceCompanyToUpdate.setPrice(insuranceCompany.getPrice());
-        insuranceCompanyRepository.save(insuranceCompanyToUpdate);
+    @GetMapping("{id}")
+    public GetInsuranceCompanyByIdResponse getById (@PathVariable Integer id){
+        return insuranceCompanyService.getById(id);
+    }
+    @GetMapping
+    public List<GetAllInsuranceCompaniesResponse> getAll() {
+        return insuranceCompanyService.getAll();
     }
 }
