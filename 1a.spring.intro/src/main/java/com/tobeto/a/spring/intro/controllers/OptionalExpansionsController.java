@@ -1,7 +1,8 @@
 package com.tobeto.a.spring.intro.controllers;
 
-import com.tobeto.a.spring.intro.entities.OptionalExpansion;
-import com.tobeto.a.spring.intro.repositories.OptionalExpansionRepository;
+import com.tobeto.a.spring.intro.services.abstracts.OptionalExpansionService;
+import com.tobeto.a.spring.intro.services.dtos.optionalExpansions.requests.AddExpansionsRequest;
+import com.tobeto.a.spring.intro.services.dtos.optionalExpansions.requests.UpdateExpansionsRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,32 +10,22 @@ import java.util.List;
 @RestController
 @RequestMapping("api/payments/optional-expansions")
 public class OptionalExpansionsController {
-    private final OptionalExpansionRepository optionalExpansionRepository;
+    private final OptionalExpansionService optionalExpansionService;
 
-    public OptionalExpansionsController(OptionalExpansionRepository optionalExpansionRepository) {
-        this.optionalExpansionRepository = optionalExpansionRepository;
+    public OptionalExpansionsController(OptionalExpansionService optionalExpansionService) {
+        this.optionalExpansionService = optionalExpansionService;
     }
-    @GetMapping
-    public List<OptionalExpansion> getAll () {
-        return optionalExpansionRepository.findAll();
-    }
-    @GetMapping("{id}")
-    public OptionalExpansion getById(@PathVariable Integer id) {
-        return optionalExpansionRepository.findById(id).orElseThrow();
-    }
+
     @PostMapping
-    public void addOptionalExpansion (@RequestBody OptionalExpansion optionalExpansion) {
-        optionalExpansionRepository.save(optionalExpansion);
+    public void addOptionalExpansion (@RequestBody AddExpansionsRequest request) {
+        optionalExpansionService.add(request);
+    }
+    @PutMapping("{id}")
+    public void updateOptionalExpansion (@RequestBody UpdateExpansionsRequest request) {
+        optionalExpansionService.update(request);
     }
     @DeleteMapping("{id}")
     public  void deleteOptionalExpansion (@PathVariable Integer id) {
-        OptionalExpansion optionalExpansionToDelete = optionalExpansionRepository.findById(id).orElseThrow();
-    }
-    @PutMapping("{id}")
-    public void updateOptionalExpansion (@RequestBody OptionalExpansion optionalExpansion) {
-        OptionalExpansion optionalExpansionToUpdate = optionalExpansionRepository.findById(optionalExpansion.getId()).orElseThrow();
-        optionalExpansionToUpdate.setName(optionalExpansion.getName());
-        optionalExpansionToUpdate.setPrice(optionalExpansion.getPrice());
-        optionalExpansionRepository.save(optionalExpansionToUpdate);
+        optionalExpansionService.delete(id);
     }
 }
