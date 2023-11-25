@@ -2,6 +2,9 @@ package com.tobeto.a.spring.intro.controllers;
 
 import com.tobeto.a.spring.intro.entities.Payment;
 import com.tobeto.a.spring.intro.repositories.PaymentRepository;
+import com.tobeto.a.spring.intro.services.abstracts.PaymentService;
+import com.tobeto.a.spring.intro.services.dtos.payment.requests.AddPaymentRequest;
+import com.tobeto.a.spring.intro.services.dtos.payment.requests.UpdatePaymentRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,34 +12,22 @@ import java.util.List;
 @RestController
 @RequestMapping("api/payments")
 public class PaymentsController {
-    private final PaymentRepository paymentRepository;
+    private final PaymentService paymentService;
 
-    public PaymentsController(PaymentRepository paymentRepository) {
-        this.paymentRepository = paymentRepository;
+    public PaymentsController(PaymentService paymentService) {
+        this.paymentService = paymentService;
     }
-    @GetMapping
-    public List<Payment> getAll() {
-        return paymentRepository.findAll();
-    }
-    @GetMapping("{id}")
-    public Payment getById (@PathVariable Integer id) {
-        return paymentRepository.findById(id).orElseThrow();
-    }
+
     @PostMapping
-    public void addPayment(@RequestBody Payment payment) {
-        paymentRepository.save(payment);
+    public void addPayment(@RequestBody AddPaymentRequest request) {
+        paymentService.add(request);
     }
     @DeleteMapping("{id}")
     public void deletePayment (@PathVariable Integer id){
-        Payment paymentToDelete = paymentRepository.findById(id).orElseThrow();
-        paymentRepository.delete(paymentToDelete);
+        paymentService.delete(id);
     }
     @PutMapping("{id}")
-    public void updatePayment (@RequestBody Payment payment){
-        Payment paymentToUpdate = paymentRepository.findById(payment.getId()).orElseThrow();
-        paymentToUpdate.setReservation(payment.getReservation());
-        paymentToUpdate.setAmount(payment.getAmount());
-        paymentToUpdate.setLastPaymentDate(payment.getLastPaymentDate());
-        paymentRepository.save(paymentToUpdate);
+    public void updatePayment (@RequestBody UpdatePaymentRequest request){
+        paymentService.update(request);
     }
 }

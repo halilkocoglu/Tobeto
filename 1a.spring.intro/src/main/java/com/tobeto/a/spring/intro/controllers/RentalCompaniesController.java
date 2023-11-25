@@ -2,6 +2,9 @@ package com.tobeto.a.spring.intro.controllers;
 
 import com.tobeto.a.spring.intro.entities.RentalCompany;
 import com.tobeto.a.spring.intro.repositories.RentalCompanyRepository;
+import com.tobeto.a.spring.intro.services.abstracts.RentalCompanyService;
+import com.tobeto.a.spring.intro.services.dtos.rentalCompany.requests.AddRentalCompanyRequest;
+import com.tobeto.a.spring.intro.services.dtos.rentalCompany.requests.UpdateRentalCompanyRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,34 +12,22 @@ import java.util.List;
 @RestController
 @RequestMapping("api/rental-companies")
 public class RentalCompaniesController {
-    private final RentalCompanyRepository rentalCompanyRepository;
+    private final RentalCompanyService rentalCompanyService;
 
-    public RentalCompaniesController(RentalCompanyRepository rentalCompanyRepository) {
-        this.rentalCompanyRepository = rentalCompanyRepository;
+    public RentalCompaniesController(RentalCompanyService rentalCompanyService) {
+        this.rentalCompanyService = rentalCompanyService;
     }
 
-    @GetMapping
-    public List<RentalCompany> getAll () {
-        return rentalCompanyRepository.findAll();
-    }
-    @GetMapping("{id}")
-    public RentalCompany getById(@PathVariable Integer id) {
-        return rentalCompanyRepository.findById(id).orElseThrow();
-    }
     @PostMapping
-    public void addRentalCompany(@RequestBody RentalCompany rentalCompany){
-        rentalCompanyRepository.save(rentalCompany);
+    public void addRentalCompany(@RequestBody AddRentalCompanyRequest request){
+        rentalCompanyService.add(request);
+    }
+    @PutMapping("{id}")
+    public void updateRentalCompany (@RequestBody UpdateRentalCompanyRequest request){
+        rentalCompanyService.update(request);
     }
     @DeleteMapping("{id}")
     public  void deleteRentalCompany (@PathVariable Integer id){
-        RentalCompany rentalCompanyToDelete = rentalCompanyRepository.findById(id).orElseThrow();
-        rentalCompanyRepository.delete(rentalCompanyToDelete);
-    }
-    @PutMapping("{id}")
-    public void updateRentalCompany (@RequestBody RentalCompany rentalCompany){
-        RentalCompany rentalCompanyToUpdate = rentalCompanyRepository.findById(rentalCompany.getId()).orElseThrow();
-        rentalCompanyToUpdate.setName(rentalCompany.getName());
-        rentalCompanyToUpdate.setLocation(rentalCompany.getLocation());
-        rentalCompanyRepository.save(rentalCompanyToUpdate);
+        rentalCompanyService.delete(id);
     }
 }

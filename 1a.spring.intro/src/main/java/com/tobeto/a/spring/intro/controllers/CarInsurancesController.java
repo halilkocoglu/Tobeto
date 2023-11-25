@@ -1,7 +1,10 @@
 package com.tobeto.a.spring.intro.controllers;
 
-import com.tobeto.a.spring.intro.entities.CarInsurance;
-import com.tobeto.a.spring.intro.repositories.CarInsuranceRepository;
+import com.tobeto.a.spring.intro.services.abstracts.CarInsuranceService;
+import com.tobeto.a.spring.intro.services.dtos.carInsurances.requests.AddCarInsuranceRequest;
+import com.tobeto.a.spring.intro.services.dtos.carInsurances.requests.UpdateCarInsuranceRequest;
+import com.tobeto.a.spring.intro.services.dtos.carInsurances.responses.GetAllCarInsurancesResponse;
+import com.tobeto.a.spring.intro.services.dtos.carInsurances.responses.GetCarInsuranceByIdResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.PublicKey;
@@ -10,35 +13,31 @@ import java.util.List;
 @RestController
 @RequestMapping("api/car-insurances")
 public class CarInsurancesController {
-    private final CarInsuranceRepository carInsuranceRepository;
+    private final CarInsuranceService carInsuranceService;
 
-    public CarInsurancesController(CarInsuranceRepository carInsuranceRepository) {
-        this.carInsuranceRepository = carInsuranceRepository;
+    public CarInsurancesController(CarInsuranceService carInsuranceService) {
+        this.carInsuranceService = carInsuranceService;
     }
+
     @GetMapping
-    public List<CarInsurance> getAll() {
-        return carInsuranceRepository.findAll();
+    public List<GetAllCarInsurancesResponse> getAll() {
+
+        return carInsuranceService.getAll();
     }
     @GetMapping("{id}")
-    public CarInsurance getById (@PathVariable Integer id) {
-        return carInsuranceRepository.findById(id).orElseThrow();
+    public GetCarInsuranceByIdResponse getById (@PathVariable Integer id) {
+        return carInsuranceService.getById(id);
     }
     @PostMapping
-    public void addCarInsurance (@RequestBody CarInsurance carInsurance) {
-        carInsuranceRepository.save(carInsurance);
+    public void addCarInsurance (@RequestBody AddCarInsuranceRequest request) {
+        carInsuranceService.add(request);
     }
     @DeleteMapping("{id}")
     public void deleteCarInsurance (@PathVariable Integer id) {
-        CarInsurance insuranceToDelete = carInsuranceRepository.findById(id).orElseThrow();
-        carInsuranceRepository.delete(insuranceToDelete);
+        carInsuranceService.delete(id);
     }
     @PutMapping("{id}")
-    public void updateCarInsurance (@RequestBody CarInsurance carInsurance) {
-        CarInsurance insuranceToUpdate = carInsuranceRepository.findById(carInsurance.getId()).orElseThrow();
-        insuranceToUpdate.setInsuranceCompany(carInsurance.getInsuranceCompany());
-        insuranceToUpdate.setExpirationDate(carInsurance.getExpirationDate());
-        insuranceToUpdate.setCar(carInsurance.getCar());
-
-        carInsuranceRepository.save(insuranceToUpdate);
+    public void updateCarInsurance (@RequestBody UpdateCarInsuranceRequest request) {
+        carInsuranceService.update(request);
     }
 }

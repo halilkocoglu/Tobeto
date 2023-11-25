@@ -1,7 +1,10 @@
 package com.tobeto.a.spring.intro.controllers;
 
-import com.tobeto.a.spring.intro.entities.CarCategory;
-import com.tobeto.a.spring.intro.repositories.CarCategoryRepository;
+import com.tobeto.a.spring.intro.services.abstracts.CarCategoryService;
+import com.tobeto.a.spring.intro.services.dtos.carCategories.requests.AddCarCategoryRequest;
+import com.tobeto.a.spring.intro.services.dtos.carCategories.requests.UpdateCarCategoryRequest;
+import com.tobeto.a.spring.intro.services.dtos.carCategories.responses.GetAllCarCategoriesResponse;
+import com.tobeto.a.spring.intro.services.dtos.carCategories.responses.GetCarCategoryByIdResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,34 +12,31 @@ import java.util.List;
 @RestController
 @RequestMapping("api/car-categories")
 public class CarCategoriesController {
-    private final CarCategoryRepository carCategoryRepository;
+    private final CarCategoryService carCategoryService;
 
-    public CarCategoriesController(CarCategoryRepository carCategoryRepository) {
-        this.carCategoryRepository = carCategoryRepository;
+    public CarCategoriesController(CarCategoryService carCategoryService) {
+        this.carCategoryService = carCategoryService;
     }
 
     @GetMapping
-    public List<CarCategory> getAll () {
-        List<CarCategory> categories = carCategoryRepository.findAll();
-        return  categories;
+    public List<GetAllCarCategoriesResponse> getAll() {
+        return carCategoryService.getAll();
     }
     @GetMapping("{id}")
-    public CarCategory getById (@PathVariable Integer id) {
-        return carCategoryRepository.findById(id).orElseThrow();
+    public GetCarCategoryByIdResponse getById (@PathVariable Integer id) {
+
+        return carCategoryService.getById(id);
     }
     @PostMapping
-    public void addCategory (@RequestBody CarCategory carCategory){
-        carCategoryRepository.save(carCategory);
+    public void addCategory (@RequestBody AddCarCategoryRequest request){
+        carCategoryService.add(request);
     }
     @DeleteMapping("{id}")
     public void deleteCategory (@PathVariable Integer id) {
-        CarCategory categoryToDelete = carCategoryRepository.findById(id).orElseThrow();
-        carCategoryRepository.delete(categoryToDelete);
+        carCategoryService.delete(id);
     }
     @PutMapping("{id}")
-    public void updateCategory (@RequestBody CarCategory carCategory) {
-        CarCategory categoryToUpdate  = carCategoryRepository.findById(carCategory.getId()).orElseThrow();
-        categoryToUpdate.setName(carCategory.getName());
-        carCategoryRepository.save(categoryToUpdate);
+    public void updateCategory (@RequestBody UpdateCarCategoryRequest request) {
+        carCategoryService.update(request);
     }
 }
