@@ -1,12 +1,9 @@
 package com.tobeto.a.spring.intro.controllers;
 
-import com.tobeto.a.spring.intro.entities.Customer;
-import com.tobeto.a.spring.intro.repositories.CustomerRepository;
 import com.tobeto.a.spring.intro.services.abstracts.CustomerService;
 import com.tobeto.a.spring.intro.services.dtos.customer.requests.AddCustomerRequest;
 import com.tobeto.a.spring.intro.services.dtos.customer.requests.UpdateCustomerRequest;
-import com.tobeto.a.spring.intro.services.dtos.customer.responses.GetAllCustomerResponse;
-import com.tobeto.a.spring.intro.services.dtos.customer.responses.GetCustomerByIdResponse;
+import com.tobeto.a.spring.intro.services.dtos.customer.responses.GetCustomerResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,12 +30,12 @@ public class CustomersController {
         customerService.delete(id);
     }
     @GetMapping("{id}")
-    public GetCustomerByIdResponse getById (@PathVariable Integer id) {
+    public GetCustomerResponse getById (@PathVariable Integer id) {
         return customerService.getById(id);
     }
 
     @GetMapping
-    public List<GetAllCustomerResponse> getAll ( ) {
+    public List<GetCustomerResponse> getAll ( ) {
         return customerService.getAll();
     }
 }

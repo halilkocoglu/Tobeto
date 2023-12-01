@@ -1,12 +1,16 @@
 package com.tobeto.a.spring.intro.services.concretes;
 
+import com.tobeto.a.spring.intro.entities.Customer;
 import com.tobeto.a.spring.intro.entities.CustomerPhone;
+import com.tobeto.a.spring.intro.entities.PhoneCountryCode;
 import com.tobeto.a.spring.intro.repositories.CustomerPhoneRepository;
+import com.tobeto.a.spring.intro.repositories.CustomerRepository;
+import com.tobeto.a.spring.intro.repositories.PhoneCountryCodeRepository;
 import com.tobeto.a.spring.intro.services.abstracts.CustomerPhoneService;
+import com.tobeto.a.spring.intro.services.dtos.customer.responses.GetCustomerResponse;
 import com.tobeto.a.spring.intro.services.dtos.customerPhone.requests.AddCustomerPhoneRequest;
 import com.tobeto.a.spring.intro.services.dtos.customerPhone.requests.UpdateCustomerPhoneRequest;
-import com.tobeto.a.spring.intro.services.dtos.customerPhone.responses.GetAllCustomerPhoneResponse;
-import com.tobeto.a.spring.intro.services.dtos.customerPhone.responses.GetCustomerPhoneByIdResponse;
+import com.tobeto.a.spring.intro.services.dtos.customerPhone.responses.GetCustomerPhoneResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,10 +19,15 @@ import java.util.List;
 @Service
 public class CustomerPhoneManager  implements CustomerPhoneService {
     private final CustomerPhoneRepository customerPhoneRepository;
+    private final CustomerRepository customerRepository;
+    private final PhoneCountryCodeRepository phoneCountryCodeRepository;
 
-    public CustomerPhoneManager(CustomerPhoneRepository customerPhoneRepository) {
+    public CustomerPhoneManager(CustomerPhoneRepository customerPhoneRepository, CustomerRepository customerRepository, PhoneCountryCodeRepository phoneCountryCodeRepository) {
         this.customerPhoneRepository = customerPhoneRepository;
+        this.customerRepository = customerRepository;
+        this.phoneCountryCodeRepository = phoneCountryCodeRepository;
     }
+
 
     @Override
     public void add(AddCustomerPhoneRequest request) {
@@ -45,9 +54,9 @@ public class CustomerPhoneManager  implements CustomerPhoneService {
     }
 
     @Override
-    public GetCustomerPhoneByIdResponse getById(Integer id) {
+    public GetCustomerPhoneResponse getById(Integer id) {
         CustomerPhone customerPhone = customerPhoneRepository.findById(id).orElseThrow();
-        GetCustomerPhoneByIdResponse response = new GetCustomerPhoneByIdResponse();
+        GetCustomerPhoneResponse response = new GetCustomerPhoneResponse();
         response.setCustomer(customerPhone.getCustomer());
         response.setPhoneCountryCode(customerPhone.getPhoneCountryCode());
         response.setPhone(customerPhone.getPhone());
@@ -55,11 +64,11 @@ public class CustomerPhoneManager  implements CustomerPhoneService {
     }
 
     @Override
-    public List<GetAllCustomerPhoneResponse> getAll() {
+    public List<GetCustomerPhoneResponse> getAll() {
         List<CustomerPhone> customerPhoneList = customerPhoneRepository.findAll();
-        List<GetAllCustomerPhoneResponse> responseList = new ArrayList<>();
+        List<GetCustomerPhoneResponse> responseList = new ArrayList<>();
         for (CustomerPhone customerPhone : customerPhoneList) {
-            GetAllCustomerPhoneResponse  response = new GetAllCustomerPhoneResponse();
+            GetCustomerPhoneResponse response = new GetCustomerPhoneResponse();
             response.setId(customerPhone.getId());
             response.setCustomer(customerPhone.getCustomer());
             response.setPhoneCountryCode(customerPhone.getPhoneCountryCode());
@@ -67,5 +76,17 @@ public class CustomerPhoneManager  implements CustomerPhoneService {
             responseList.add(response);
         }
         return responseList;
+    }
+
+    @Override
+    public List<GetCustomerPhoneResponse> getByCustomer(Integer id) {
+        Customer customer = customerRepository.findById(id).orElseThrow();
+        return customerPhoneRepository.findByCustomer(customer);
+    }
+
+    @Override
+    public List<GetCustomerPhoneResponse> getByCountryCode(Integer id) {
+        PhoneCountryCode countryCode = phoneCountryCodeRepository.findById(id).orElseThrow();
+        return customerPhoneRepository.findByCountry(countryCode);
     }
 }

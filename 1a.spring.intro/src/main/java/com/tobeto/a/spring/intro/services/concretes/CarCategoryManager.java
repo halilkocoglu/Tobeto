@@ -5,8 +5,7 @@ import com.tobeto.a.spring.intro.repositories.CarCategoryRepository;
 import com.tobeto.a.spring.intro.services.abstracts.CarCategoryService;
 import com.tobeto.a.spring.intro.services.dtos.carCategories.requests.AddCarCategoryRequest;
 import com.tobeto.a.spring.intro.services.dtos.carCategories.requests.UpdateCarCategoryRequest;
-import com.tobeto.a.spring.intro.services.dtos.carCategories.responses.GetAllCarCategoriesResponse;
-import com.tobeto.a.spring.intro.services.dtos.carCategories.responses.GetCarCategoryByIdResponse;
+import com.tobeto.a.spring.intro.services.dtos.carCategories.responses.GetCarCategoriesResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -43,21 +42,31 @@ public class CarCategoryManager implements CarCategoryService {
     }
 
     @Override
-    public GetCarCategoryByIdResponse getById(Integer id) {
-        CarCategory carCategory = carCategoryRepository.findById(id).orElseThrow();
-        GetCarCategoryByIdResponse response = new GetCarCategoryByIdResponse();
-        response.setName(carCategory.getName());
-        return response;
+    public GetCarCategoriesResponse getById(Integer id) {
+        return carCategoryRepository.findByID(id);
     }
 
     @Override
-    public List<GetAllCarCategoriesResponse> getAll() {
+    public List<GetCarCategoriesResponse> getAll() {
         List<CarCategory> carCategoryList = carCategoryRepository.findAll();
-        List<GetAllCarCategoriesResponse> responseList = new ArrayList<>();
+        List<GetCarCategoriesResponse> responseList = new ArrayList<>();
         for (CarCategory category: carCategoryList) {
-            GetAllCarCategoriesResponse response = new GetAllCarCategoriesResponse();
+            GetCarCategoriesResponse response = new GetCarCategoriesResponse();
             response.setId(category.getId());
             response.setName(category.getName());
+            responseList.add(response);
+        }
+        return responseList;
+    }
+
+    @Override
+    public List<GetCarCategoriesResponse> getByName(String name) {
+        List<CarCategory> carCategoryList = carCategoryRepository.findByNameStartingWith(name);
+        List<GetCarCategoriesResponse> responseList = new ArrayList<>();
+        for (CarCategory cat: carCategoryList) {
+            GetCarCategoriesResponse response = new GetCarCategoriesResponse();
+            response.setId(cat.getId());
+            response.setName(cat.getName());
             responseList.add(response);
         }
         return responseList;

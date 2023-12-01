@@ -3,8 +3,7 @@ package com.tobeto.a.spring.intro.controllers;
 import com.tobeto.a.spring.intro.services.abstracts.CarCategoryService;
 import com.tobeto.a.spring.intro.services.dtos.carCategories.requests.AddCarCategoryRequest;
 import com.tobeto.a.spring.intro.services.dtos.carCategories.requests.UpdateCarCategoryRequest;
-import com.tobeto.a.spring.intro.services.dtos.carCategories.responses.GetAllCarCategoriesResponse;
-import com.tobeto.a.spring.intro.services.dtos.carCategories.responses.GetCarCategoryByIdResponse;
+import com.tobeto.a.spring.intro.services.dtos.carCategories.responses.GetCarCategoriesResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,15 +17,6 @@ public class CarCategoriesController {
         this.carCategoryService = carCategoryService;
     }
 
-    @GetMapping
-    public List<GetAllCarCategoriesResponse> getAll() {
-        return carCategoryService.getAll();
-    }
-    @GetMapping("{id}")
-    public GetCarCategoryByIdResponse getById (@PathVariable Integer id) {
-
-        return carCategoryService.getById(id);
-    }
     @PostMapping
     public void addCategory (@RequestBody AddCarCategoryRequest request){
         carCategoryService.add(request);
@@ -38,5 +28,17 @@ public class CarCategoriesController {
     @PutMapping("{id}")
     public void updateCategory (@RequestBody UpdateCarCategoryRequest request) {
         carCategoryService.update(request);
+    }
+    @GetMapping
+    public List<GetCarCategoriesResponse> getAll() {
+        return carCategoryService.getAll();
+    }
+    @GetMapping("{id}")
+    public GetCarCategoriesResponse getById (@PathVariable Integer id) {
+        return carCategoryService.getById(id);
+    }
+    @GetMapping("dto")
+    public List<GetCarCategoriesResponse> getByName(@RequestParam String name) {
+        return  carCategoryService.getByName(name);
     }
 }

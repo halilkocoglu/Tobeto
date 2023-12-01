@@ -5,8 +5,8 @@ import com.tobeto.a.spring.intro.repositories.BrandRepository;
 import com.tobeto.a.spring.intro.services.abstracts.BrandService;
 import com.tobeto.a.spring.intro.services.dtos.brand.requests.AddBrandRequest;
 import com.tobeto.a.spring.intro.services.dtos.brand.requests.UpdateBrandRequest;
-import com.tobeto.a.spring.intro.services.dtos.brand.responses.GetAllBrandResponse;
-import com.tobeto.a.spring.intro.services.dtos.brand.responses.GetByIdBrandResponse;
+import com.tobeto.a.spring.intro.services.dtos.brand.responses.GetBrandResponse;
+import com.tobeto.a.spring.intro.services.dtos.car.responses.GetCarResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -45,11 +45,11 @@ public class BrandManager implements BrandService {
     }
 
     @Override
-    public List<GetAllBrandResponse> getAll() {
+    public List<GetBrandResponse> getAll() {
         List<Brand> brandList = brandRepository.findAll();
-        List<GetAllBrandResponse> responseList = new ArrayList<>();
-        for (Brand brand : brandList) {
-            GetAllBrandResponse response = new GetAllBrandResponse();
+        List<GetBrandResponse> responseList = new ArrayList<>();
+        for (Brand brand: brandList) {
+            GetBrandResponse response = new GetBrandResponse();
             response.setId(brand.getId());
             response.setName(brand.getName());
             responseList.add(response);
@@ -58,12 +58,20 @@ public class BrandManager implements BrandService {
     }
 
     @Override
-    public GetByIdBrandResponse getById(Integer id) {
-        Brand brand = brandRepository.findById(id).orElseThrow();
-        GetByIdBrandResponse response = new GetByIdBrandResponse();
-        response.setName(brand.getName());
-        return response;
+    public GetBrandResponse getById(Integer id) {
+        return brandRepository.findByID(id);
     }
 
-
+    @Override
+    public List<GetBrandResponse> getByName(String name) {
+        List<Brand> brandList = brandRepository.findByNameStartingWith(name);
+        List<GetBrandResponse> responseList = new ArrayList<>();
+        for (Brand brand: brandList) {
+            GetBrandResponse response = new GetBrandResponse();
+            response.setId(brand.getId());
+            response.setName(brand.getName());
+            responseList.add(response);
+        }
+        return responseList;
+    }
 }
