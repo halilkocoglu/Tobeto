@@ -5,8 +5,7 @@ import com.tobeto.a.spring.intro.repositories.CarRepository;
 import com.tobeto.a.spring.intro.services.abstracts.CarService;
 import com.tobeto.a.spring.intro.services.dtos.car.requests.AddCarRequest;
 import com.tobeto.a.spring.intro.services.dtos.car.requests.UpdateCarRequest;
-import com.tobeto.a.spring.intro.services.dtos.car.responses.GetAllCarResponse;
-import com.tobeto.a.spring.intro.services.dtos.car.responses.GetCarByIdResponse;
+import com.tobeto.a.spring.intro.services.dtos.car.responses.GetCarResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -54,37 +53,67 @@ public class CarManager implements CarService {
     }
 
     @Override
-    public GetCarByIdResponse getById(Integer id) {
+    public GetCarResponse getById(Integer id) {
         Car car = carRepository.findById(id).orElseThrow();
-        GetCarByIdResponse response = new GetCarByIdResponse();
+        GetCarResponse response = new GetCarResponse();
         response.setStatus(car.getStatus());
         response.setModelYear(car.getModelYear());
         response.setModelName(car.getModelName());
         response.setPlateNumber(car.getPlateNumber());
-        response.setBrandId(car.getBrand());
-        response.setCategoryId(car.getCarCategory());
-        response.setRentalCompanyId(car.getRentalCompany());
-        response.setDaily_price(car.getDailyPrice());
+        response.setBrand(car.getBrand());
+        response.setCarCategory(car.getCarCategory());
+        response.setRentalCompany(car.getRentalCompany());
+        response.setDailyPrice(car.getDailyPrice());
         return response;
     }
 
     @Override
-    public List<GetAllCarResponse> getAll() {
+    public List<GetCarResponse> getAll() {
         List<Car> carList = carRepository.findAll();
-        List<GetAllCarResponse> responseList = new ArrayList<>();
+        List<GetCarResponse> responseList = new ArrayList<>();
         for (Car car : carList) {
-            GetAllCarResponse  response = new GetAllCarResponse();
+            GetCarResponse response = new GetCarResponse();
             response.setId(car.getId());
             response.setStatus(car.getStatus());
             response.setModelYear(car.getModelYear());
             response.setModelName(car.getModelName());
             response.setPlateNumber(car.getPlateNumber());
-            response.setBrandId(car.getBrand());
-            response.setCategoryId(car.getCarCategory());
-            response.setRentalCompanyId(car.getRentalCompany());
-            response.setDaily_price(car.getDailyPrice());
+            response.setBrand(car.getBrand());
+            response.setCarCategory(car.getCarCategory());
+            response.setRentalCompany(car.getRentalCompany());
+            response.setDailyPrice(car.getDailyPrice());
             responseList.add(response);
         }
         return responseList;
+    }
+
+    @Override
+    public List<GetCarResponse> findByStatus() {
+        List<Car> carList = carRepository.findByStatusTrue();
+        List<GetCarResponse> responseList = new ArrayList<>();
+        for (Car car : carList) {
+            GetCarResponse response = new GetCarResponse();
+            response.setId(car.getId());
+            response.setStatus(car.getStatus());
+            response.setModelYear(car.getModelYear());
+            response.setModelName(car.getModelName());
+            response.setPlateNumber(car.getPlateNumber());
+            response.setBrand(car.getBrand());
+            response.setCarCategory(car.getCarCategory());
+            response.setRentalCompany(car.getRentalCompany());
+            response.setDailyPrice(car.getDailyPrice());
+            responseList.add(response);
+        }
+        return responseList;
+    }
+
+    @Override
+    public List<GetCarResponse> orderByModelYear() {
+        return carRepository.orderByModelYear();
+    }
+
+    @Override
+    public List<GetCarResponse> greaterThanPrice(Double price) {
+        return carRepository.graterThanPrice(price);
     }
 }

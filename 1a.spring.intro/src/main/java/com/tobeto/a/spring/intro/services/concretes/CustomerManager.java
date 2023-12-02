@@ -5,8 +5,7 @@ import com.tobeto.a.spring.intro.repositories.CustomerRepository;
 import com.tobeto.a.spring.intro.services.abstracts.CustomerService;
 import com.tobeto.a.spring.intro.services.dtos.customer.requests.AddCustomerRequest;
 import com.tobeto.a.spring.intro.services.dtos.customer.requests.UpdateCustomerRequest;
-import com.tobeto.a.spring.intro.services.dtos.customer.responses.GetAllCustomerResponse;
-import com.tobeto.a.spring.intro.services.dtos.customer.responses.GetCustomerByIdResponse;
+import com.tobeto.a.spring.intro.services.dtos.customer.responses.GetCustomerResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -47,9 +46,9 @@ public class CustomerManager implements CustomerService {
     }
 
     @Override
-    public GetCustomerByIdResponse getById(Integer id) {
+    public GetCustomerResponse getById(Integer id) {
         Customer customer = customerRepository.findById(id).orElseThrow();
-        GetCustomerByIdResponse response = new GetCustomerByIdResponse();
+        GetCustomerResponse response = new GetCustomerResponse();
         response.setFirstname(customer.getFirstname());
         response.setLastname(customer.getLastname());
         response.setEmail(customer.getEmail());
@@ -58,11 +57,11 @@ public class CustomerManager implements CustomerService {
     }
 
     @Override
-    public List<GetAllCustomerResponse> getAll() {
+    public List<GetCustomerResponse> getAll() {
         List<Customer> customerList = customerRepository.findAll();
-        List<GetAllCustomerResponse> responseList = new ArrayList<>();
+        List<GetCustomerResponse> responseList = new ArrayList<>();
         for (Customer customer : customerList) {
-            GetAllCustomerResponse response = new GetAllCustomerResponse();
+            GetCustomerResponse response = new GetCustomerResponse();
             response.setId(customer.getId());
             response.setFirstname(customer.getFirstname());
             response.setLastname(customer.getLastname());
@@ -71,5 +70,25 @@ public class CustomerManager implements CustomerService {
             responseList.add(response);
         }
         return responseList;
+    }
+
+    @Override
+    public List<GetCustomerResponse> getByAgeGreaterThan(Short age) {
+        List<Customer> customerList = customerRepository.findByAgeGreaterThan(age);
+        List<GetCustomerResponse> responseList = new ArrayList<>();
+        for (Customer c: customerList) {
+            GetCustomerResponse response = new GetCustomerResponse();
+            response.setId(c.getId());
+            response.setFirstname(c.getFirstname());
+            response.setLastname(c.getLastname());
+            response.setAge(c.getAge());
+            responseList.add(response);
+        }
+        return responseList;
+    }
+
+    @Override
+    public List<GetCustomerResponse> getAdultCustomers() {
+        return customerRepository.findAdultCustomer();
     }
 }

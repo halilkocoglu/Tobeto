@@ -3,11 +3,9 @@ package com.tobeto.a.spring.intro.controllers;
 import com.tobeto.a.spring.intro.services.abstracts.CarInsuranceService;
 import com.tobeto.a.spring.intro.services.dtos.carInsurances.requests.AddCarInsuranceRequest;
 import com.tobeto.a.spring.intro.services.dtos.carInsurances.requests.UpdateCarInsuranceRequest;
-import com.tobeto.a.spring.intro.services.dtos.carInsurances.responses.GetAllCarInsurancesResponse;
-import com.tobeto.a.spring.intro.services.dtos.carInsurances.responses.GetCarInsuranceByIdResponse;
+import com.tobeto.a.spring.intro.services.dtos.carInsurances.responses.GetCarInsuranceResponse;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.PublicKey;
 import java.util.List;
 
 @RestController
@@ -20,12 +18,12 @@ public class CarInsurancesController {
     }
 
     @GetMapping
-    public List<GetAllCarInsurancesResponse> getAll() {
+    public List<GetCarInsuranceResponse> getAll() {
 
         return carInsuranceService.getAll();
     }
     @GetMapping("{id}")
-    public GetCarInsuranceByIdResponse getById (@PathVariable Integer id) {
+    public GetCarInsuranceResponse getById (@PathVariable Integer id) {
         return carInsuranceService.getById(id);
     }
     @PostMapping

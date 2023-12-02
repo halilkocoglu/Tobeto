@@ -5,7 +5,11 @@ import com.tobeto.a.spring.intro.repositories.OptionalExpansionRepository;
 import com.tobeto.a.spring.intro.services.abstracts.OptionalExpansionService;
 import com.tobeto.a.spring.intro.services.dtos.optionalExpansions.requests.AddExpansionsRequest;
 import com.tobeto.a.spring.intro.services.dtos.optionalExpansions.requests.UpdateExpansionsRequest;
+import com.tobeto.a.spring.intro.services.dtos.optionalExpansions.responses.GetAllExpansionsResponse;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class OptionalExpansionManager  implements OptionalExpansionService {
@@ -34,5 +38,24 @@ public class OptionalExpansionManager  implements OptionalExpansionService {
     public void delete(Integer id) {
         OptionalExpansion optionalExpansion = optionalExpansionRepository.findById(id).orElseThrow();
         optionalExpansionRepository.delete(optionalExpansion);
+    }
+
+    @Override
+    public List<GetAllExpansionsResponse> getByName(String name) {
+        List<OptionalExpansion> expansionList = optionalExpansionRepository.findByNameStartingWith(name);
+        List<GetAllExpansionsResponse> responseList = new ArrayList<>();
+        for (OptionalExpansion expansion:expansionList) {
+            GetAllExpansionsResponse response = new GetAllExpansionsResponse();
+            response.setId(expansion.getId());
+            response.setName(expansion.getName());
+            response.setPrice(expansion.getPrice());
+            responseList.add(response);
+        }
+        return responseList;
+    }
+
+    @Override
+    public List<GetAllExpansionsResponse> getByPriceOrderBy() {
+        return optionalExpansionRepository.orderByPriceDesc();
     }
 }

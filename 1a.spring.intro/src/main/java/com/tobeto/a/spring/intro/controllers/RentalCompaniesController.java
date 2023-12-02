@@ -5,6 +5,7 @@ import com.tobeto.a.spring.intro.repositories.RentalCompanyRepository;
 import com.tobeto.a.spring.intro.services.abstracts.RentalCompanyService;
 import com.tobeto.a.spring.intro.services.dtos.rentalCompany.requests.AddRentalCompanyRequest;
 import com.tobeto.a.spring.intro.services.dtos.rentalCompany.requests.UpdateRentalCompanyRequest;
+import com.tobeto.a.spring.intro.services.dtos.rentalCompany.responses.GetAllRentalCompaniesResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,5 +30,17 @@ public class RentalCompaniesController {
     @DeleteMapping("{id}")
     public  void deleteRentalCompany (@PathVariable Integer id){
         rentalCompanyService.delete(id);
+    }
+    @GetMapping
+    List<GetAllRentalCompaniesResponse> getAll(){
+        return rentalCompanyService.getAll();
+    }
+    @GetMapping("dto-getByName")
+    List<GetAllRentalCompaniesResponse> getByName(@RequestParam String name){
+        return  rentalCompanyService.getByName(name);
+    }
+    @GetMapping("dto-getByLocation")
+    List<GetAllRentalCompaniesResponse> getByLocation(@RequestParam String location){
+        return rentalCompanyService.getByLocation(location);
     }
 }

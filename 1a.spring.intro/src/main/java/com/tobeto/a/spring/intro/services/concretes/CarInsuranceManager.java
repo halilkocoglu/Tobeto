@@ -5,8 +5,7 @@ import com.tobeto.a.spring.intro.repositories.CarInsuranceRepository;
 import com.tobeto.a.spring.intro.services.abstracts.CarInsuranceService;
 import com.tobeto.a.spring.intro.services.dtos.carInsurances.requests.AddCarInsuranceRequest;
 import com.tobeto.a.spring.intro.services.dtos.carInsurances.requests.UpdateCarInsuranceRequest;
-import com.tobeto.a.spring.intro.services.dtos.carInsurances.responses.GetAllCarInsurancesResponse;
-import com.tobeto.a.spring.intro.services.dtos.carInsurances.responses.GetCarInsuranceByIdResponse;
+import com.tobeto.a.spring.intro.services.dtos.carInsurances.responses.GetCarInsuranceResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -44,29 +43,25 @@ public class CarInsuranceManager implements CarInsuranceService {
     }
 
     @Override
-    public GetCarInsuranceByIdResponse getById(Integer id) {
-        CarInsurance carInsurance = carInsuranceRepository.findById(id).orElseThrow();
-        GetCarInsuranceByIdResponse response = new GetCarInsuranceByIdResponse();
-        response.setCarId(carInsurance.getCar());
-        response.setInsuranceCompanyId(carInsurance.getInsuranceCompany());
-        response.setExpirationDate(carInsurance.getExpirationDate());
-        return response;
+    public GetCarInsuranceResponse getById(Integer id) {
+        return carInsuranceRepository.findByID(id);
     }
 
     @Override
-    public List<GetAllCarInsurancesResponse> getAll() {
+    public List<GetCarInsuranceResponse> getAll() {
         List<CarInsurance> carInsuranceList = carInsuranceRepository.findAll();
-        List<GetAllCarInsurancesResponse> responseList = new ArrayList<>();
+        List<GetCarInsuranceResponse> responseList = new ArrayList<>();
 
         for (CarInsurance carInsurance : carInsuranceList) {
-            GetAllCarInsurancesResponse response = new GetAllCarInsurancesResponse();
+            GetCarInsuranceResponse response = new GetCarInsuranceResponse();
             response.setId(carInsurance.getId());
-            response.setCarId(carInsurance.getCar());
-            response.setInsuranceCompanyId(carInsurance.getInsuranceCompany());
+            response.setCar(carInsurance.getCar());
+            response.setInsuranceCompany(carInsurance.getInsuranceCompany());
             response.setExpirationDate(carInsurance.getExpirationDate());
 
             responseList.add(response);
         }
         return responseList;
     }
+
 }

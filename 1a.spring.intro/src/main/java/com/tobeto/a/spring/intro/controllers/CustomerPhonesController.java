@@ -1,10 +1,11 @@
 package com.tobeto.a.spring.intro.controllers;
 
+import com.tobeto.a.spring.intro.entities.Customer;
+import com.tobeto.a.spring.intro.entities.PhoneCountryCode;
 import com.tobeto.a.spring.intro.services.abstracts.CustomerPhoneService;
 import com.tobeto.a.spring.intro.services.dtos.customerPhone.requests.AddCustomerPhoneRequest;
 import com.tobeto.a.spring.intro.services.dtos.customerPhone.requests.UpdateCustomerPhoneRequest;
-import com.tobeto.a.spring.intro.services.dtos.customerPhone.responses.GetAllCustomerPhoneResponse;
-import com.tobeto.a.spring.intro.services.dtos.customerPhone.responses.GetCustomerPhoneByIdResponse;
+import com.tobeto.a.spring.intro.services.dtos.customerPhone.responses.GetCustomerPhoneResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,11 +32,19 @@ public class CustomerPhonesController {
         customerPhoneService.delete(id);
     }
     @GetMapping("{id}")
-    public GetCustomerPhoneByIdResponse getById(@PathVariable Integer id) {
+    public GetCustomerPhoneResponse getById(@PathVariable Integer id) {
         return customerPhoneService.getById(id);
     }
     @GetMapping
-    public List<GetAllCustomerPhoneResponse> getAll() {
+    public List<GetCustomerPhoneResponse> getAll() {
         return customerPhoneService.getAll();
+    }
+    @GetMapping("dto-byCustomer")
+    public List<GetCustomerPhoneResponse> getByCustomer(@RequestParam Integer id){
+        return customerPhoneService.getByCustomer(id);
+    }
+    @GetMapping("dto-byCountryCode")
+    public  List<GetCustomerPhoneResponse> getByCountryCode(@RequestParam Integer id ){
+        return  customerPhoneService.getByCountryCode(id);
     }
 }
