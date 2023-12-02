@@ -12,4 +12,6 @@ public interface CustomerService {
     void delete(Integer id);
     GetCustomerResponse getById(Integer id);
     List<GetCustomerResponse> getAll();
+    List<GetCustomerResponse> getByAgeGreaterThan(Short age);
+    List<GetCustomerResponse> getAdultCustomers();
 }

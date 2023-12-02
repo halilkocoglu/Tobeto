@@ -3,6 +3,7 @@ package com.tobeto.a.spring.intro.controllers;
 import com.tobeto.a.spring.intro.services.abstracts.OptionalExpansionService;
 import com.tobeto.a.spring.intro.services.dtos.optionalExpansions.requests.AddExpansionsRequest;
 import com.tobeto.a.spring.intro.services.dtos.optionalExpansions.requests.UpdateExpansionsRequest;
+import com.tobeto.a.spring.intro.services.dtos.optionalExpansions.responses.GetAllExpansionsResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,5 +28,13 @@ public class OptionalExpansionsController {
     @DeleteMapping("{id}")
     public  void deleteOptionalExpansion (@PathVariable Integer id) {
         optionalExpansionService.delete(id);
+    }
+    @GetMapping("dto-getName")
+    public List<GetAllExpansionsResponse> getByName(@RequestParam String name){
+        return optionalExpansionService.getByName(name);
+    }
+    @GetMapping("dto-orderByPrice")
+    public List<GetAllExpansionsResponse> orderByPrice(){
+        return optionalExpansionService.getByPriceOrderBy();
     }
 }

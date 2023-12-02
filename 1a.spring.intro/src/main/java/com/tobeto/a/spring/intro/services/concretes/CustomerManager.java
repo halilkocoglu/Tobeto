@@ -71,4 +71,24 @@ public class CustomerManager implements CustomerService {
         }
         return responseList;
     }
+
+    @Override
+    public List<GetCustomerResponse> getByAgeGreaterThan(Short age) {
+        List<Customer> customerList = customerRepository.findByAgeGreaterThan(age);
+        List<GetCustomerResponse> responseList = new ArrayList<>();
+        for (Customer c: customerList) {
+            GetCustomerResponse response = new GetCustomerResponse();
+            response.setId(c.getId());
+            response.setFirstname(c.getFirstname());
+            response.setLastname(c.getLastname());
+            response.setAge(c.getAge());
+            responseList.add(response);
+        }
+        return responseList;
+    }
+
+    @Override
+    public List<GetCustomerResponse> getAdultCustomers() {
+        return customerRepository.findAdultCustomer();
+    }
 }

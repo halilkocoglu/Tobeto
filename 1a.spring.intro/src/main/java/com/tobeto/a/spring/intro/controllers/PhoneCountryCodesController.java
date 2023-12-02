@@ -5,6 +5,7 @@ import com.tobeto.a.spring.intro.repositories.PhoneCountryCodeRepository;
 import com.tobeto.a.spring.intro.services.abstracts.PhoneCountryCodeService;
 import com.tobeto.a.spring.intro.services.dtos.phoneCountryCode.requests.AddCountryCodeRequest;
 import com.tobeto.a.spring.intro.services.dtos.phoneCountryCode.requests.UpdateCountryCodeRequest;
+import com.tobeto.a.spring.intro.services.dtos.phoneCountryCode.responses.GetAllCountryCodesResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,5 +30,17 @@ public class PhoneCountryCodesController {
     @DeleteMapping("{id}")
     public void deletePhoneCountryCode(@PathVariable Integer id){
         phoneCountryCodeService.delete(id);
+    }
+    @GetMapping("dto-getByName")
+    List<GetAllCountryCodesResponse> getByName(@RequestParam String name){
+        return phoneCountryCodeService.getByName(name);
+    }
+    @GetMapping("dto-orderByCode")
+    List<GetAllCountryCodesResponse> orderByCode(){
+        return phoneCountryCodeService.orderByCode();
+    }
+    @GetMapping
+    List<GetAllCountryCodesResponse> getAll(){
+        return phoneCountryCodeService.getAll();
     }
 }

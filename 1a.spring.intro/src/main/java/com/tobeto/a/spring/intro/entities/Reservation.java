@@ -19,7 +19,7 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "order_date")
-    private LocalDate oderDate;
+    private LocalDate orderDate;
     @Column(name = "pick_up_date")
     private LocalDate pickUpDate;
     @Column(name = "drop_off_date")

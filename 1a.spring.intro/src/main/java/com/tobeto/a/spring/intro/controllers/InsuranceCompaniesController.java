@@ -4,7 +4,6 @@ import com.tobeto.a.spring.intro.services.abstracts.InsuranceCompanyService;
 import com.tobeto.a.spring.intro.services.dtos.insuranceCompany.requests.AddInsuranceCompanyRequest;
 import com.tobeto.a.spring.intro.services.dtos.insuranceCompany.requests.UpdateInsuranceCompanyRequest;
 import com.tobeto.a.spring.intro.services.dtos.insuranceCompany.responses.GetAllInsuranceCompaniesResponse;
-import com.tobeto.a.spring.intro.services.dtos.insuranceCompany.responses.GetInsuranceCompanyByIdResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,11 +30,19 @@ public class InsuranceCompaniesController {
         insuranceCompanyService.delete(id);
     }
     @GetMapping("{id}")
-    public GetInsuranceCompanyByIdResponse getById (@PathVariable Integer id){
+    public GetAllInsuranceCompaniesResponse getById (@PathVariable Integer id){
         return insuranceCompanyService.getById(id);
     }
     @GetMapping
     public List<GetAllInsuranceCompaniesResponse> getAll() {
         return insuranceCompanyService.getAll();
+    }
+    @GetMapping("dto-coverage-less")
+    public List<GetAllInsuranceCompaniesResponse> getCoverageLessThan(@RequestParam Double rate){
+        return insuranceCompanyService.getByCoverageRateLessThan(rate);
+    }
+    @GetMapping("dto-price-greater")
+    public List<GetAllInsuranceCompaniesResponse> getPriceGreaterThan(@RequestParam Double price){
+        return insuranceCompanyService.getByPriceGreaterThan(price);
     }
 }

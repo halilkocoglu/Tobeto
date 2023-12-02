@@ -5,6 +5,8 @@ import com.tobeto.a.spring.intro.repositories.PaymentRepository;
 import com.tobeto.a.spring.intro.services.abstracts.PaymentService;
 import com.tobeto.a.spring.intro.services.dtos.payment.requests.AddPaymentRequest;
 import com.tobeto.a.spring.intro.services.dtos.payment.requests.UpdatePaymentRequest;
+import com.tobeto.a.spring.intro.services.dtos.payment.responses.GetAllPaymentsResponses;
+import com.tobeto.a.spring.intro.services.dtos.payment.responses.GetPaymentResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,5 +31,13 @@ public class PaymentsController {
     @PutMapping("{id}")
     public void updatePayment (@RequestBody UpdatePaymentRequest request){
         paymentService.update(request);
+    }
+    @GetMapping("dto-getBy-reservation-id")
+    GetPaymentResponse getByReservationId(@RequestParam Integer id){
+        return  paymentService.getByReservationId(id);
+    }
+    @GetMapping
+    List<GetAllPaymentsResponses> getAll(){
+        return paymentService.getAll();
     }
 }

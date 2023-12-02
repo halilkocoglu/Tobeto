@@ -5,7 +5,11 @@ import com.tobeto.a.spring.intro.repositories.RentalCompanyRepository;
 import com.tobeto.a.spring.intro.services.abstracts.RentalCompanyService;
 import com.tobeto.a.spring.intro.services.dtos.rentalCompany.requests.AddRentalCompanyRequest;
 import com.tobeto.a.spring.intro.services.dtos.rentalCompany.requests.UpdateRentalCompanyRequest;
+import com.tobeto.a.spring.intro.services.dtos.rentalCompany.responses.GetAllRentalCompaniesResponse;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class RentalCompanyManager implements RentalCompanyService {
@@ -35,5 +39,38 @@ public class RentalCompanyManager implements RentalCompanyService {
     public void delete(Integer id) {
         RentalCompany company = rentalCompanyRepository.findById(id).orElseThrow();
         rentalCompanyRepository.delete(company);
+    }
+
+    @Override
+    public List<GetAllRentalCompaniesResponse> getAll() {
+        return rentalCompanyRepository.findAllCompanies();
+    }
+
+    @Override
+    public List<GetAllRentalCompaniesResponse> getByName(String name) {
+        List<RentalCompany> companyList = rentalCompanyRepository.findByNameStartingWith(name);
+        List<GetAllRentalCompaniesResponse> responseList = new ArrayList<>();
+        for (RentalCompany company:companyList) {
+            GetAllRentalCompaniesResponse response = new GetAllRentalCompaniesResponse();
+            response.setId(company.getId());
+            response.setName(company.getName());
+            response.setLocation(company.getLocation());
+            responseList.add(response);
+        }
+        return responseList;
+    }
+
+    @Override
+    public List<GetAllRentalCompaniesResponse> getByLocation(String location) {
+        List<RentalCompany> companyList = rentalCompanyRepository.findByLocationStartingWith(location);
+        List<GetAllRentalCompaniesResponse> responseList = new ArrayList<>();
+        for (RentalCompany company : companyList){
+            GetAllRentalCompaniesResponse response = new GetAllRentalCompaniesResponse();
+            response.setId(company.getId());
+            response.setName(company.getName());
+            response.setLocation(company.getLocation());
+            responseList.add(response);
+        }
+        return responseList;
     }
 }

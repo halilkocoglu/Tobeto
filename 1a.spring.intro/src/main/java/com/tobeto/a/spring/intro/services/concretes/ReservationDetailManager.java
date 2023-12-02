@@ -5,7 +5,12 @@ import com.tobeto.a.spring.intro.repositories.ReservationDetailRepository;
 import com.tobeto.a.spring.intro.services.abstracts.ReservationDetailService;
 import com.tobeto.a.spring.intro.services.dtos.reservationDetail.requests.AddReservationDetailRequest;
 import com.tobeto.a.spring.intro.services.dtos.reservationDetail.requests.UpdateReservationDetailRequest;
+import com.tobeto.a.spring.intro.services.dtos.reservationDetail.responses.GetAllReservationDetailsResponse;
+import com.tobeto.a.spring.intro.services.dtos.reservationDetail.responses.GetReservationDetailByIdResponse;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ReservationDetailManager implements ReservationDetailService {
@@ -40,5 +45,41 @@ public class ReservationDetailManager implements ReservationDetailService {
     public void delete(Integer id) {
         ReservationDetail reservationDetail = reservationDetailRepository.findById(id).orElseThrow();
         reservationDetailRepository.delete(reservationDetail);
+    }
+
+    @Override
+    public List<GetReservationDetailByIdResponse> getByReservationId(Integer id) {
+        return reservationDetailRepository.findByReservationId(id);
+    }
+
+    @Override
+    public List<GetReservationDetailByIdResponse> getByExpansionId(Integer id) {
+        return reservationDetailRepository.findByExpansionId(id);
+    }
+
+    @Override
+    public List<GetReservationDetailByIdResponse> orderByQuantityDesc() {
+        return reservationDetailRepository.orderByQuantityDesc();
+    }
+
+    @Override
+    public List<GetReservationDetailByIdResponse> orderByDiscountDesc() {
+        return reservationDetailRepository.orderByDiscountDesc();
+    }
+
+    @Override
+    public List<GetAllReservationDetailsResponse> getAll() {
+        List<ReservationDetail> reservationDetailList = reservationDetailRepository.findAll();
+        List<GetAllReservationDetailsResponse> responseList = new ArrayList<>();
+        for (ReservationDetail resDetail:reservationDetailList) {
+            GetAllReservationDetailsResponse response = new GetAllReservationDetailsResponse();
+            response.setId(resDetail.getId());
+            response.setReservation(resDetail.getReservation());
+            response.setExpansion(resDetail.getOptionalExpansion());
+            response.setQuantity(resDetail.getQuantity());
+            response.setDiscount(resDetail.getDiscount());
+            responseList.add(response);
+        }
+        return responseList;
     }
 }

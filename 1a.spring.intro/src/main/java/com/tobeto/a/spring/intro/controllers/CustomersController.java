@@ -38,4 +38,12 @@ public class CustomersController {
     public List<GetCustomerResponse> getAll ( ) {
         return customerService.getAll();
     }
+    @GetMapping("dto-greater-age")
+    public List<GetCustomerResponse> getByAgeGreaterThan(@RequestParam Short age){
+        return customerService.getByAgeGreaterThan(age);
+    }
+    @GetMapping("dto-adults")
+    public List<GetCustomerResponse> getAdults() {
+        return customerService.getAdultCustomers();
+    }
 }
