@@ -61,14 +61,16 @@ public class CarCategoryManager implements CarCategoryService {
 
     @Override
     public List<GetCarCategoriesResponse> getByName(String name) {
-        List<CarCategory> carCategoryList = carCategoryRepository.findByNameStartingWith(name);
-        List<GetCarCategoriesResponse> responseList = new ArrayList<>();
+        /*List<CarCategory> carCategoryList = carCategoryRepository.findByNameStartingWith(name);*/
+        return carCategoryRepository.findAll().stream().filter((carCategory)->carCategory.getName().equals(name))
+                .map((carCategory)-> new GetCarCategoriesResponse(carCategory.getId(),carCategory.getName())).toList();
+        /*List<GetCarCategoriesResponse> responseList = new ArrayList<>();
         for (CarCategory cat: carCategoryList) {
             GetCarCategoriesResponse response = new GetCarCategoriesResponse();
             response.setId(cat.getId());
             response.setName(cat.getName());
             responseList.add(response);
         }
-        return responseList;
+        return responseList;*/
     }
 }

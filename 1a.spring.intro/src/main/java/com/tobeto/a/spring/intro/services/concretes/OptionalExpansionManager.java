@@ -42,7 +42,12 @@ public class OptionalExpansionManager  implements OptionalExpansionService {
 
     @Override
     public List<GetAllExpansionsResponse> getByName(String name) {
-        List<OptionalExpansion> expansionList = optionalExpansionRepository.findByNameStartingWith(name);
+        return optionalExpansionRepository
+                .findByNameStartingWith(name)
+                .stream()
+                .map((expansion) -> new GetAllExpansionsResponse(expansion.getId(),expansion.getName(), expansion.getPrice()))
+                .toList();
+        /*List<OptionalExpansion> expansionList = optionalExpansionRepository.findByNameStartingWith(name);
         List<GetAllExpansionsResponse> responseList = new ArrayList<>();
         for (OptionalExpansion expansion:expansionList) {
             GetAllExpansionsResponse response = new GetAllExpansionsResponse();
@@ -51,7 +56,7 @@ public class OptionalExpansionManager  implements OptionalExpansionService {
             response.setPrice(expansion.getPrice());
             responseList.add(response);
         }
-        return responseList;
+        return responseList;*/
     }
 
     @Override

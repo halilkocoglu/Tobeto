@@ -49,19 +49,10 @@ public class CarInsuranceManager implements CarInsuranceService {
 
     @Override
     public List<GetCarInsuranceResponse> getAll() {
-        List<CarInsurance> carInsuranceList = carInsuranceRepository.findAll();
-        List<GetCarInsuranceResponse> responseList = new ArrayList<>();
+       return carInsuranceRepository.findAll()
+               .stream()
+               .map((carInsurance -> new GetCarInsuranceResponse(carInsurance.getId(),carInsurance.getInsuranceCompany(),carInsurance.getExpirationDate(),carInsurance.getCar()))).toList();
 
-        for (CarInsurance carInsurance : carInsuranceList) {
-            GetCarInsuranceResponse response = new GetCarInsuranceResponse();
-            response.setId(carInsurance.getId());
-            response.setCar(carInsurance.getCar());
-            response.setInsuranceCompany(carInsurance.getInsuranceCompany());
-            response.setExpirationDate(carInsurance.getExpirationDate());
-
-            responseList.add(response);
-        }
-        return responseList;
     }
 
 }
