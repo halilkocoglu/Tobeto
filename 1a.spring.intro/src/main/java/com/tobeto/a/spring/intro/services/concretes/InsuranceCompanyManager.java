@@ -56,17 +56,11 @@ public class InsuranceCompanyManager implements InsuranceCompanyService {
 
     @Override
     public List<GetAllInsuranceCompaniesResponse> getAll() {
-        List<InsuranceCompany> insuranceCompanyList = insuranceCompanyRepository.findAll();
-        List<GetAllInsuranceCompaniesResponse> responseList = new ArrayList<>();
-        for (InsuranceCompany company : insuranceCompanyList) {
-            GetAllInsuranceCompaniesResponse response = new GetAllInsuranceCompaniesResponse();
-            response.setId(company.getId());
-            response.setName(company.getName());
-            response.setCoverageRate(company.getCoverageRate());
-            response.setPrice(company.getPrice());
-            responseList.add(response);
-        }
-        return responseList;
+        return insuranceCompanyRepository
+                .findAll()
+                .stream()
+                .map((company -> new GetAllInsuranceCompaniesResponse(company.getId(),company.getName(),company.getCoverageRate(),company.getPrice())))
+                .toList();
     }
 
     @Override

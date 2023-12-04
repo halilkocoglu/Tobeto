@@ -65,13 +65,18 @@ public class BrandManager implements BrandService {
     @Override
     public List<GetBrandResponse> getByName(String name) {
         List<Brand> brandList = brandRepository.findByNameStartingWith(name);
-        List<GetBrandResponse> responseList = new ArrayList<>();
+        return brandList.stream().map((brand) ->new GetBrandResponse(brand.getId(), brand.getName()) ).toList();
+       /* List<GetBrandResponse> responseList = new ArrayList<>();
         for (Brand brand: brandList) {
             GetBrandResponse response = new GetBrandResponse();
             response.setId(brand.getId());
             response.setName(brand.getName());
             responseList.add(response);
         }
-        return responseList;
+        return responseList;*/
     }
+    //(b1,b2) -> b1.getName().compareTo(b2.getName())
+    // Comparator.comparing(Brand::getName).thenComparing(brand::getId)...
+
+
 }
