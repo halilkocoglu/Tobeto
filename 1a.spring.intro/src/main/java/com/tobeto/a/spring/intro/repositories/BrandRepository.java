@@ -14,4 +14,8 @@ public interface BrandRepository  extends JpaRepository<Brand, Integer> {
     @Query("SELECT new com.tobeto.a.spring.intro.services.dtos.brand.responses.GetBrandResponse(b.id, b.name)"+
     "FROM Brand b WHERE b.id = :id")
     GetBrandResponse findByID(Integer id);
+
+    boolean existsByName(String name);
+    boolean existsById(Integer id);
+
 }

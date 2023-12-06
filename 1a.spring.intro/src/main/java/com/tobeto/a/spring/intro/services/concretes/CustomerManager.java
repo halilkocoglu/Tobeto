@@ -49,6 +49,7 @@ public class CustomerManager implements CustomerService {
     public GetCustomerResponse getById(Integer id) {
         Customer customer = customerRepository.findById(id).orElseThrow();
         GetCustomerResponse response = new GetCustomerResponse();
+        response.setId(customer.getId());
         response.setFirstname(customer.getFirstname());
         response.setLastname(customer.getLastname());
         response.setEmail(customer.getEmail());

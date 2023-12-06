@@ -20,5 +20,5 @@ public interface CustomerPhoneRepository extends JpaRepository<CustomerPhone, In
             + "(cp.id, cp.customer, cp.phoneCountryCode, cp.phone)"
             + "FROM CustomerPhone cp "
             + "WHERE cp.customer = :customer")
-    List<GetCustomerPhoneResponse> findByCustomer(Customer customer);
+    List<GetCustomerPhoneResponse> findByCustomer(GetCustomerResponse customer);
 }

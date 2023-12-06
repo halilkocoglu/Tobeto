@@ -20,13 +20,16 @@ public class CarManager implements CarService {
 
     @Override
     public void add(AddCarRequest request) {
+        if(carRepository.existsByPlateNumber(request.getPlateNumber())){
+            throw new RuntimeException("Plaka mevcut!");
+        }
         Car car = new Car();
         car.setModelYear(request.getModelYear());
         car.setModelName(request.getModelName());
         car.setDailyPrice(request.getDaily_price());
-        car.setBrand(request.getBrandId());
+        car.setBrand(request.getBrand());
         car.setPlateNumber(request.getPlateNumber());
-        car.setStatus(request.getStatus());
+        car.setStatus(true);
         car.setRentalCompany(request.getRentalCompanyId());
         car.setCarCategory(request.getCategoryId());
         carRepository.save(car);
@@ -34,26 +37,35 @@ public class CarManager implements CarService {
 
     @Override
     public void update(UpdateCarRequest request) {
+        if(!carRepository.existsById(request.getId())){
+            throw new RuntimeException("Geçersiz Id");
+        }
         Car car = carRepository.findById(request.getId()).orElseThrow();
         car.setModelYear(request.getModelYear());
         car.setModelName(request.getModelName());
         car.setDailyPrice(request.getDaily_price());
-        car.setBrand(request.getBrandId());
+        car.setBrand(request.getBrand());
         car.setPlateNumber(request.getPlateNumber());
         car.setStatus(request.getStatus());
         car.setRentalCompany(request.getRentalCompanyId());
-        car.setCarCategory(request.getCategoryId());
+        car.setCarCategory(request.getCategory());
         carRepository.save(car);
     }
 
     @Override
     public void delete(Integer id) {
+        if(!carRepository.existsById(id)){
+            throw new RuntimeException("Geçersiz Id");
+        }
         Car car = carRepository.findById(id).orElseThrow();
         carRepository.delete(car);
     }
 
     @Override
     public GetCarResponse getById(Integer id) {
+        if(!carRepository.existsById(id)){
+            throw new RuntimeException("Geçersiz Id");
+        }
         Car car = carRepository.findById(id).orElseThrow();
         GetCarResponse response = new GetCarResponse();
         response.setStatus(car.getStatus());

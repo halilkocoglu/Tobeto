@@ -4,6 +4,7 @@ import com.tobeto.a.spring.intro.services.abstracts.CarCategoryService;
 import com.tobeto.a.spring.intro.services.dtos.carCategories.requests.AddCarCategoryRequest;
 import com.tobeto.a.spring.intro.services.dtos.carCategories.requests.UpdateCarCategoryRequest;
 import com.tobeto.a.spring.intro.services.dtos.carCategories.responses.GetCarCategoriesResponse;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,15 +19,15 @@ public class CarCategoriesController {
     }
 
     @PostMapping
-    public void addCategory (@RequestBody AddCarCategoryRequest request){
+    public void addCategory (@RequestBody @Valid AddCarCategoryRequest request){
         carCategoryService.add(request);
     }
     @DeleteMapping("{id}")
-    public void deleteCategory (@PathVariable Integer id) {
+    public void deleteCategory (@PathVariable  Integer id) {
         carCategoryService.delete(id);
     }
     @PutMapping("{id}")
-    public void updateCategory (@RequestBody UpdateCarCategoryRequest request) {
+    public void updateCategory (@RequestBody @Valid UpdateCarCategoryRequest request) {
         carCategoryService.update(request);
     }
     @GetMapping
