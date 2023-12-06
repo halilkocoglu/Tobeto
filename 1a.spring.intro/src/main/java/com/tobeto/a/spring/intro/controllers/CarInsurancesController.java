@@ -4,6 +4,7 @@ import com.tobeto.a.spring.intro.services.abstracts.CarInsuranceService;
 import com.tobeto.a.spring.intro.services.dtos.carInsurances.requests.AddCarInsuranceRequest;
 import com.tobeto.a.spring.intro.services.dtos.carInsurances.requests.UpdateCarInsuranceRequest;
 import com.tobeto.a.spring.intro.services.dtos.carInsurances.responses.GetCarInsuranceResponse;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class CarInsurancesController {
         return carInsuranceService.getById(id);
     }
     @PostMapping
-    public void addCarInsurance (@RequestBody AddCarInsuranceRequest request) {
+    public void addCarInsurance (@RequestBody @Valid AddCarInsuranceRequest request) {
         carInsuranceService.add(request);
     }
     @DeleteMapping("{id}")
@@ -35,7 +36,7 @@ public class CarInsurancesController {
         carInsuranceService.delete(id);
     }
     @PutMapping("{id}")
-    public void updateCarInsurance (@RequestBody UpdateCarInsuranceRequest request) {
+    public void updateCarInsurance (@RequestBody @Valid UpdateCarInsuranceRequest request) {
         carInsuranceService.update(request);
     }
 }

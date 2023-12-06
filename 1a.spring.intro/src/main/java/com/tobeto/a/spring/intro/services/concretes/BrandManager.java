@@ -15,13 +15,17 @@ import java.util.List;
 @Service
 public class BrandManager implements BrandService {
     private final BrandRepository brandRepository;
+    private final String errMessage = "Aynı isimde marka mevcut!";
 
     public BrandManager(BrandRepository brandRepository) {
         this.brandRepository = brandRepository;
     }
 
     @Override
-    public void add(AddBrandRequest request) {
+    public void add( AddBrandRequest request) {
+        if (brandRepository.existsByName(request.getName())){
+            throw new RuntimeException(errMessage);
+        }
         Brand brand = new Brand();
         brand.setName(request.getName());
         brandRepository.save(brand);
@@ -29,6 +33,12 @@ public class BrandManager implements BrandService {
 
     @Override
     public void update(UpdateBrandRequest request) {
+        if(!brandRepository.existsById(request.getId())){
+            throw new RuntimeException("Geçersiz Id");
+        }
+        if (brandRepository.existsByName(request.getName())){
+            throw new RuntimeException(errMessage);
+        }
         Brand brandToUpdate = brandRepository.findById(request.getId()).orElseThrow();
 
         brandToUpdate.setName(request.getName());
@@ -39,6 +49,9 @@ public class BrandManager implements BrandService {
 
     @Override
     public void delete(Integer id) {
+        if(!brandRepository.existsById(id)){
+            throw new RuntimeException("Geçersiz Id");
+        }
         Brand brand = brandRepository.findById(id).orElseThrow();
         brandRepository.delete(brand);
 
@@ -66,14 +79,6 @@ public class BrandManager implements BrandService {
     public List<GetBrandResponse> getByName(String name) {
         List<Brand> brandList = brandRepository.findByNameStartingWith(name);
         return brandList.stream().map((brand) ->new GetBrandResponse(brand.getId(), brand.getName()) ).toList();
-       /* List<GetBrandResponse> responseList = new ArrayList<>();
-        for (Brand brand: brandList) {
-            GetBrandResponse response = new GetBrandResponse();
-            response.setId(brand.getId());
-            response.setName(brand.getName());
-            responseList.add(response);
-        }
-        return responseList;*/
     }
     //(b1,b2) -> b1.getName().compareTo(b2.getName())
     // Comparator.comparing(Brand::getName).thenComparing(brand::getId)...

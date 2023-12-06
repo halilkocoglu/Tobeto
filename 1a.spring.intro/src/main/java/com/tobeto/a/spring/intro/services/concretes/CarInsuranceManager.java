@@ -20,6 +20,8 @@ public class CarInsuranceManager implements CarInsuranceService {
 
     @Override
     public void add(AddCarInsuranceRequest request) {
+
+
         CarInsurance carInsurance = new CarInsurance();
         carInsurance.setExpirationDate(request.getExpirationDate());
         carInsurance.setInsuranceCompany(request.getInsuranceCompanyId());

@@ -7,6 +7,8 @@ import com.tobeto.a.spring.intro.repositories.CustomerPhoneRepository;
 import com.tobeto.a.spring.intro.repositories.CustomerRepository;
 import com.tobeto.a.spring.intro.repositories.PhoneCountryCodeRepository;
 import com.tobeto.a.spring.intro.services.abstracts.CustomerPhoneService;
+import com.tobeto.a.spring.intro.services.abstracts.CustomerService;
+import com.tobeto.a.spring.intro.services.abstracts.PhoneCountryCodeService;
 import com.tobeto.a.spring.intro.services.dtos.customer.responses.GetCustomerResponse;
 import com.tobeto.a.spring.intro.services.dtos.customerPhone.requests.AddCustomerPhoneRequest;
 import com.tobeto.a.spring.intro.services.dtos.customerPhone.requests.UpdateCustomerPhoneRequest;
@@ -19,12 +21,14 @@ import java.util.List;
 @Service
 public class CustomerPhoneManager  implements CustomerPhoneService {
     private final CustomerPhoneRepository customerPhoneRepository;
-    private final CustomerRepository customerRepository;
-    private final PhoneCountryCodeRepository phoneCountryCodeRepository;
+    private  final CustomerService customerService;
+    //private final CustomerRepository customerRepository; // Wrong. u can implement only services in service layer or 1 repo own kind
+    //private final PhoneCountryCodeService phoneCountryCodeService;
+    private final PhoneCountryCodeRepository phoneCountryCodeRepository; //WRONG
 
-    public CustomerPhoneManager(CustomerPhoneRepository customerPhoneRepository, CustomerRepository customerRepository, PhoneCountryCodeRepository phoneCountryCodeRepository) {
+    public CustomerPhoneManager(CustomerPhoneRepository customerPhoneRepository, CustomerService customerService, PhoneCountryCodeRepository phoneCountryCodeRepository) {
         this.customerPhoneRepository = customerPhoneRepository;
-        this.customerRepository = customerRepository;
+        this.customerService = customerService;
         this.phoneCountryCodeRepository = phoneCountryCodeRepository;
     }
 
@@ -80,13 +84,13 @@ public class CustomerPhoneManager  implements CustomerPhoneService {
 
     @Override
     public List<GetCustomerPhoneResponse> getByCustomer(Integer id) {
-        Customer customer = customerRepository.findById(id).orElseThrow();
+        GetCustomerResponse customer = customerService.getById(id);
         return customerPhoneRepository.findByCustomer(customer);
     }
 
     @Override
     public List<GetCustomerPhoneResponse> getByCountryCode(Integer id) {
-        PhoneCountryCode countryCode = phoneCountryCodeRepository.findById(id).orElseThrow();
+        PhoneCountryCode countryCode = phoneCountryCodeRepository.findById(id).orElseThrow();//Wrong usage
         return customerPhoneRepository.findByCountry(countryCode);
     }
 }

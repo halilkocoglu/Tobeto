@@ -4,6 +4,7 @@ import com.tobeto.a.spring.intro.services.abstracts.BrandService;
 import com.tobeto.a.spring.intro.services.dtos.brand.requests.AddBrandRequest;
 import com.tobeto.a.spring.intro.services.dtos.brand.requests.UpdateBrandRequest;
 import com.tobeto.a.spring.intro.services.dtos.brand.responses.GetBrandResponse;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,13 +25,13 @@ public class BrandsController {
         brandService.delete(id);
     }
     @PostMapping
-    public void add(@RequestBody AddBrandRequest request ){
+    public void add(@RequestBody @Valid AddBrandRequest request ){
         brandService.add(request);
     }
 
     //Update
     @PutMapping("{id}")
-    public void update (@RequestBody UpdateBrandRequest request) {
+    public void update (@RequestBody @Valid UpdateBrandRequest request) {
         brandService.update(request);
     }
     @GetMapping

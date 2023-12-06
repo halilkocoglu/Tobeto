@@ -14,13 +14,16 @@ import java.util.List;
 @Service
 public class CarCategoryManager implements CarCategoryService {
     private final CarCategoryRepository carCategoryRepository;
-
+    private final String errMessage = "Kategori mevcut.";
     public CarCategoryManager(CarCategoryRepository carCategoryRepository) {
         this.carCategoryRepository = carCategoryRepository;
     }
 
     @Override
     public void add(AddCarCategoryRequest request) {
+        if(carCategoryRepository.existsByName(request.getName())){
+            throw new RuntimeException(errMessage);
+        }
         CarCategory carCategory = new CarCategory();
         carCategory.setName(request.getName());
         carCategoryRepository.save(carCategory);
@@ -28,6 +31,9 @@ public class CarCategoryManager implements CarCategoryService {
 
     @Override
     public void update(UpdateCarCategoryRequest request) {
+        if(!carCategoryRepository.existsById(request.getId())){
+            throw new RuntimeException("Geçersiz Id");
+        }
         CarCategory carCategory = carCategoryRepository.findById(request.getId()).orElseThrow();
         carCategory.setName(request.getName());
         carCategoryRepository.save(carCategory);
@@ -37,12 +43,18 @@ public class CarCategoryManager implements CarCategoryService {
 
     @Override
     public void delete(Integer id) {
+        if(!carCategoryRepository.existsById(id)){
+            throw new RuntimeException("Geçersiz Id");
+        }
         CarCategory carCategory = carCategoryRepository.findById(id).orElseThrow();
         carCategoryRepository.delete(carCategory);
     }
 
     @Override
     public GetCarCategoriesResponse getById(Integer id) {
+        if(!carCategoryRepository.existsById(id)){
+            throw new RuntimeException("Geçersiz Id");
+        }
         return carCategoryRepository.findByID(id);
     }
 
@@ -61,16 +73,10 @@ public class CarCategoryManager implements CarCategoryService {
 
     @Override
     public List<GetCarCategoriesResponse> getByName(String name) {
-        /*List<CarCategory> carCategoryList = carCategoryRepository.findByNameStartingWith(name);*/
+        if(!carCategoryRepository.existsByName(name)){
+            throw new RuntimeException(errMessage);
+        }
         return carCategoryRepository.findAll().stream().filter((carCategory)->carCategory.getName().equals(name))
                 .map((carCategory)-> new GetCarCategoriesResponse(carCategory.getId(),carCategory.getName())).toList();
-        /*List<GetCarCategoriesResponse> responseList = new ArrayList<>();
-        for (CarCategory cat: carCategoryList) {
-            GetCarCategoriesResponse response = new GetCarCategoriesResponse();
-            response.setId(cat.getId());
-            response.setName(cat.getName());
-            responseList.add(response);
-        }
-        return responseList;*/
     }
 }
