@@ -2,6 +2,7 @@ package com.tobeto.a.spring.intro.repositories;
 
 import com.tobeto.a.spring.intro.entities.Brand;
 import com.tobeto.a.spring.intro.services.dtos.brand.responses.GetBrandResponse;
+import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -16,6 +17,6 @@ public interface BrandRepository  extends JpaRepository<Brand, Integer> {
     GetBrandResponse findByID(Integer id);
 
     boolean existsByName(String name);
-    boolean existsById(Integer id);
+    boolean existsById(@NonNull Integer id);
 
 }
