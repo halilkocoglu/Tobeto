@@ -1,7 +1,7 @@
 import React from 'react'
 import { ProductModel } from '../../models/responses/ProductModel'
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import axios, { HttpStatusCode } from 'axios';
 import ProductService from '../../services/ProductService';
 
 type Props = {
@@ -12,6 +12,10 @@ const ProductCard = (props: Props) => {
     const handleDelete = async (id: number) => {
         try {
           const response = await ProductService.delete(id);
+          if(response.status === HttpStatusCode.Ok){
+            console.log("Succesfully deleted");
+            
+          }
           console.log(response.data);
         } catch (error) {
           console.log(error);
