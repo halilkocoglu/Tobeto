@@ -6,6 +6,5 @@ img {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    align-items: c;
     height: 300px;
 }
