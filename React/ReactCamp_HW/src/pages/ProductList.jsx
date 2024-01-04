@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import {
   Icon,
-  Label,
   Menu,
   MenuItem,
   Table,
@@ -13,6 +12,7 @@ import {
   TableRow,
 } from "semantic-ui-react";
 import productService from "../services/productService";
+import { Link } from "react-router-dom";
 
 function ProductList() {
   const [productList, setProductList] = useState([]);
@@ -46,7 +46,9 @@ function ProductList() {
             return (
               <TableRow key={product.id}>
                 <TableCell>{product.brand}</TableCell>
-                <TableCell>{product.title}</TableCell>
+                <TableCell>
+                  <Link to={`/products/${product.id}`}>{product.title} </Link>
+                </TableCell>
                 <TableCell>{product.price}</TableCell>
                 <TableCell>{product.discountPercentage + " %"}</TableCell>
                 <TableCell>{product.category}</TableCell>
