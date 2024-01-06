@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  Button,
   Icon,
   Menu,
   MenuItem,
@@ -13,9 +14,13 @@ import {
 } from "semantic-ui-react";
 import productService from "../services/productService";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../store/actions/cartActions";
+import { toast } from "react-toastify";
 
 function ProductList() {
   const [productList, setProductList] = useState([]);
+  const dispatch = useDispatch();
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -26,6 +31,19 @@ function ProductList() {
     } catch (error) {
       console.log(error);
     }
+  };
+  const handleAddToCart = (product) => {
+    dispatch(addToCart(product));
+    toast.success(`${product.title} added to cart`, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   };
   return (
     <div>
@@ -38,6 +56,7 @@ function ProductList() {
             <TableHeaderCell>Discount Percentage</TableHeaderCell>
             <TableHeaderCell>Category</TableHeaderCell>
             <TableHeaderCell>Stock</TableHeaderCell>
+            <TableHeaderCell></TableHeaderCell>
           </TableRow>
         </TableHeader>
 
@@ -53,6 +72,11 @@ function ProductList() {
                 <TableCell>{product.discountPercentage + " %"}</TableCell>
                 <TableCell>{product.category}</TableCell>
                 <TableCell>{product.stock}</TableCell>
+                <TableCell>
+                  <Button onClick={() => handleAddToCart(product)}>
+                    Sepete Ekle
+                  </Button>
+                </TableCell>
               </TableRow>
             );
           })}
