@@ -4,6 +4,7 @@ import { Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { Route, Routes } from "react-router-dom";
 import ProductDetail from "../pages/ProductDetail";
 import CartDetail from "../pages/CartDetail";
+import PorductAdd from "../pages/PorductAdd";
 
 function Dashboard() {
   return (
@@ -19,6 +20,7 @@ function Dashboard() {
               <Route path="/products" element={<ProductList />} />
               <Route path="/products/:id" element={<ProductDetail />} />
               <Route path="/cart" element={<CartDetail />} />
+              <Route path="/product/add" element={<PorductAdd />} />
             </Routes>
           </GridColumn>
         </GridRow>

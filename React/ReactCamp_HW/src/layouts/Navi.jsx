@@ -23,7 +23,7 @@ function Navi() {
       <Menu inverted fixed="top">
         <Container>
           <MenuItem as={NavLink} to={"/"} name="home" />
-          <MenuItem name="messages" />
+          <MenuItem as={NavLink} to={"/product/add"} name="Add Product" />
           <MenuMenu position="right">
             {cartItems.length > 0 && <CartSummary />}
             {isLoggedIn ? (
