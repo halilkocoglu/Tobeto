@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     List<Customer> findByAgeGreaterThan(Short age);
@@ -13,4 +14,5 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
             + "(c.id, c.firstname, c.lastname, c.email, c.age)"
             + "FROM Customer c WHERE c.age > 18")
     List<GetCustomerResponse> findAdultCustomer();
+    Optional<Customer> findByEmail(String email);
 }

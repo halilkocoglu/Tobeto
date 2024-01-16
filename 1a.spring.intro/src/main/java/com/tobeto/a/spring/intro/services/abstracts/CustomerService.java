@@ -6,11 +6,12 @@ import com.tobeto.a.spring.intro.services.dtos.customer.responses.GetCustomerRes
 
 import java.util.List;
 
-public interface CustomerService {
+public interface CustomerService  {
     void add(AddCustomerRequest request);
     void update(UpdateCustomerRequest request);
     void delete(Integer id);
     GetCustomerResponse getById(Integer id);
+    GetCustomerResponse getByEmail(String email);
     List<GetCustomerResponse> getAll();
     List<GetCustomerResponse> getByAgeGreaterThan(Short age);
     List<GetCustomerResponse> getAdultCustomers();

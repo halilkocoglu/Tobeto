@@ -1,4 +1,4 @@
-package com.tobeto.a.spring.intro.services.dtos.customer.requests;
+package com.tobeto.a.spring.intro.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,12 +7,11 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class AddCustomerRequest {
+@AllArgsConstructor
+public class RegisterRequest {
     private String firstname;
-    private String lastname;
+    private  String lastname;
     private String email;
-    private Short age;
     private String password;
 }

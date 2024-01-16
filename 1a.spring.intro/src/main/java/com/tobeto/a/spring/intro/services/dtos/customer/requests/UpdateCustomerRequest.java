@@ -9,4 +9,6 @@ public class UpdateCustomerRequest {
     private String lastname;
     private String email;
     private Short age;
+    private String password;
+
 }

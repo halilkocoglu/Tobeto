@@ -26,6 +26,7 @@ public class CustomerManager implements CustomerService {
         customer.setLastname(request.getLastname());
         customer.setEmail(request.getEmail());
         customer.setAge(request.getAge());
+        customer.setPassword(request.getPassword());
         customerRepository.save(customer);
     }
 
@@ -36,6 +37,7 @@ public class CustomerManager implements CustomerService {
         customer.setLastname(request.getLastname());
         customer.setEmail(request.getEmail());
         customer.setAge(request.getAge());
+        customer.setPassword(request.getPassword());
         customerRepository.save(customer);
     }
 
@@ -48,6 +50,18 @@ public class CustomerManager implements CustomerService {
     @Override
     public GetCustomerResponse getById(Integer id) {
         Customer customer = customerRepository.findById(id).orElseThrow();
+        GetCustomerResponse response = new GetCustomerResponse();
+        response.setId(customer.getId());
+        response.setFirstname(customer.getFirstname());
+        response.setLastname(customer.getLastname());
+        response.setEmail(customer.getEmail());
+        response.setAge(customer.getAge());
+        return response;
+    }
+
+    @Override
+    public GetCustomerResponse getByEmail(String email) {
+        Customer customer = customerRepository.findByEmail(email).orElseThrow();
         GetCustomerResponse response = new GetCustomerResponse();
         response.setId(customer.getId());
         response.setFirstname(customer.getFirstname());

@@ -33,7 +33,8 @@ public class CustomersController {
     public GetCustomerResponse getById (@PathVariable Integer id) {
         return customerService.getById(id);
     }
-
+    @GetMapping
+    public GetCustomerResponse getByEmail(@RequestParam(required = true) String email) {return customerService.getByEmail(email);}
     @GetMapping
     public List<GetCustomerResponse> getAll ( ) {
         return customerService.getAll();
